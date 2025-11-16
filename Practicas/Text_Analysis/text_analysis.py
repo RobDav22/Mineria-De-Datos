@@ -8,7 +8,9 @@ Original file is located at
 
 # **Práctica 9: Text analysis**
 
-Cargamos el dataset, para esta práctica trabajaremos con la columna "Plataform"
+Cargamos el dataset, para esta práctica trabajaremos con las columnas "Plataform", "Genre" "Name"
+
+# Plataform
 """
 
 import pandas as pd
@@ -44,29 +46,57 @@ plt.show()
 
 """El resultado esperado es una nube de palabras colorida donde las plataformas como PS2, X360, PS3, Wii, DS y PC son las que mas predominan a simple vista.
 
-# Uso de texto alternativo
-Para realizar esta parte de la práctica, haremos uso de la libreria word cloud, usaremos un texto extraido de la pagina de wikipedia que trata acerca del tema de Text Mining. El texto se encuentra almacenado en el archivo textAnalysis.txt.
+# Genre
+
+Creamos el texto base para género
 """
 
-# Cargar el archivo
-with open("/content/textAnalysis.txt", "r", encoding="utf-8") as file:
-    text_data = file.read()
+# Unir todos los géneros en una sola cadena de texto
+text_genre = " ".join(str(genre) for genre in df['Genre'])
 
-"""Creamos la nube de palabras, la generamos y mostramos en pantalla"""
+"""Generar la nube de palabras y mostrarla en pantalla"""
 
-wordcloud = WordCloud(
-    width=1200,
-    height=800,
+# Crear la nube de palabras de géneros
+wordcloud_genre = WordCloud(
+    width=1000,
+    height=600,
     background_color='white',
-    colormap='inferno',
-    stopwords={'the', 'and', 'of', 'to', 'in', 'for', 'is', 'a', 'on', 'as', 'by', 'an', 'be', 'with', 'that'},
-    max_words=200
-).generate(text_data)
+    colormap='plasma',
+    collocations=False
+).generate(text_genre)
 
-plt.figure(figsize=(14, 9))
-plt.imshow(wordcloud, interpolation='bilinear')
+plt.figure(figsize=(12, 8))
+plt.imshow(wordcloud_genre, interpolation='bilinear')
 plt.axis('off')
-plt.title("Nube de Palabras del Texto 'textAnalysis.txt'", fontsize=18)
+plt.title("Nube de Palabras de Géneros de Videojuegos", fontsize=16)
 plt.show()
 
-"""El resultado final es una nube de palabras, donde las mas comunes a simple vista son "text, mining, analysis, information, data" por ejemplo."""
+"""El resultado es una nube donde géneros como Action o Sports están en letras más grandes según su frecuencia en el dataset
+
+# Name
+
+Combinamos todos los nombres en un solo texto
+"""
+
+# Unir todos los nombres de juegos en una sola cadena
+text = " ".join(str(name) for name in df['Name'])
+
+"""Generamos la nube de palabras y la mostramos en pantalla"""
+
+wordcloud = WordCloud(
+    width=1400,
+    height=800,
+    background_color='white',
+    colormap='magma',
+    stopwords={'the','and','of','a','to','in','for','on','with','by','&'},
+    max_words=200
+).generate(text)
+
+plt.figure(figsize=(14, 10))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title("Nube de Palabras de Nombres de Videojuegos", fontsize=18)
+plt.show()
+
+"""La nube muestra palabras comunes como "Game", "Adventure" o "II (dos)"
+"""
